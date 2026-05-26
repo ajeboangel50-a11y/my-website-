@@ -1,0 +1,191 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  interpolate-size: allow-keywords;
+
+  --bg: #0e0d0c;
+  --text: #e8e2d9;
+  --muted: #6b6560;
+  --accent: #c9a96e;
+  --gap: 3px;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Jost", sans-serif;
+  font-weight: 300;
+  min-height: 100vh;
+}
+
+header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 2.5rem 3rem 2rem;
+  border-bottom: 1px solid #1e1c1a;
+}
+
+.wordmark {
+  font-family: "Cormorant Garamond", serif;
+  font-weight: 300;
+  font-size: 2rem;
+  letter-spacing: 0.15em;
+  color: var(--text);
+}
+
+.wordmark em {
+  font-style: italic;
+  color: var(--accent);
+}
+
+.header-meta {
+  font-size: 0.68rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.grid-container {
+  padding: 3rem;
+}
+
+img {
+  object-fit: cover;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-rows: 260px 380px 220px 340px;
+  gap: var(--gap);
+}
+
+.cell {
+  overflow: clip;
+  anchor-scope: --⚓︎-morph;
+
+  > button {
+    transition: scale 0.15s;
+    anchor-name: --⚓︎-morph;
+    display: block;
+    width: 100%;
+    height: 100%;
+    border: 0;
+
+    > img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      transition:
+        transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+        filter 0.33s ease;
+      filter: brightness(0.75) saturate(0.8);
+      &:hover {
+        filter: brightness(1) saturate(1);
+      }
+    }
+  }
+
+  &:hover {
+    > button {
+      scale: 1.07;
+    }
+  }
+}
+
+[popover] {
+  background: transparent;
+  border: 0;
+  box-shadow: 0 0 5rem 1rem oklch(0% 0 0 / 0.5);
+
+  position-anchor: --⚓︎-morph;
+
+  --speed: 0.5s;
+  @media (prefers-reduced-motion: no-preference) {
+    transition:
+      display var(--speed) allow-discrete,
+      overlay var(--speed) allow-discrete,
+      height var(--speed) ease,
+      width var(--speed) ease,
+      top var(--speed) ease,
+      left var(--speed) ease;
+  }
+
+  &:popover-open {
+    height: auto; /* or fit-content */
+    max-height: 70dvb;
+    width: 70dvi;
+    left: 15dvi;
+    top: 15dvb;
+  }
+
+  /* order is important, this last */
+  @starting-style {
+    &:popover-open {
+      left: anchor(left);
+      top: anchor(top);
+      width: anchor-size(width);
+      height: anchor-size(height);
+    }
+  }
+
+  &:not(:popover-open) {
+    left: anchor(left);
+    top: anchor(top);
+    width: anchor-size(width);
+    height: anchor-size(height);
+  }
+
+  /* Doesn't animate well...
+  &::backdrop {
+    background: oklch(0% 0 0 / 0.2);
+  } */
+}
+
+/* Staggered load animation */
+.cell {
+  animation: fadeIn 2s ease both;
+  animation-delay: calc(0.05s * sibling-index());
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(1.02);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 3rem 2.5rem;
+  border-top: 1px solid #1e1c1a;
+  margin-top: 3rem;
+}
+
+.footer-text {
+  font-size: 0.68rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--accent);
+  opacity: 0.6;
+}
